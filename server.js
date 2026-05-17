@@ -1,3 +1,4 @@
+// v1.0.1 - with database config
 require('dotenv').config();
 const express = require('express');
 const cors    = require('cors');
