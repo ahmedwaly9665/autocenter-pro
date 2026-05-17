@@ -71,20 +71,22 @@ app.use((err, req, res, next) => {
 
 // ─── Start ──────────────────────────────────────────────────
 async function start() {
+  // ابدأ الخادم أولاً بدون انتظار قاعدة البيانات
+  app.listen(PORT, () => {
+    console.log(`\n🚀 AutoCenter Pro يعمل على المنفذ ${PORT}`);
+    console.log(`📊 API: http://localhost:${PORT}/api/health`);
+    console.log(`\n🔍 ENV Check:`);
+    console.log(`   DATABASE_URL: ${process.env.DATABASE_URL ? '✅' : '❌'}`);
+    console.log(`   JWT_SECRET: ${process.env.JWT_SECRET ? '✅' : '❌'}`);
+    console.log(`   NODE_ENV: ${process.env.NODE_ENV || 'not set'}`);
+  });
+
+  // حاول تهيئة قاعدة البيانات بشكل منفصل
   try {
     await initDB();
-    app.listen(PORT, () => {
-      console.log(`\n🚀 AutoCenter Pro يعمل على المنفذ ${PORT}`);
-      console.log(`📊 API: http://localhost:${PORT}/api/health`);
-      console.log(`🌐 Frontend: http://localhost:${PORT}`);
-      console.log(`\n👤 بيانات الدخول الافتراضية:`);
-      console.log(`   Username: admin`);
-      console.log(`   Password: admin1234\n`);
-    });
+    console.log('✅ قاعدة البيانات جاهزة');
   } catch (err) {
-    console.error('❌ فشل في تشغيل الخادم:', err);
-    process.exit(1);
+    console.error('⚠️  قاعدة البيانات غير متاحة:', err.message);
+    console.log('🔄 الخادم يعمل بدون قاعدة بيانات');
   }
 }
-
-start();
