@@ -20,6 +20,14 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+app.get('/api/env', (req, res) => {
+  const env = {};
+  Object.keys(process.env).forEach(key => {
+    env[key] = (process.env[key] || '').substring(0, 50);
+  });
+  res.json(env);
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
