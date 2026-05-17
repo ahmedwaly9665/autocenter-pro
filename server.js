@@ -12,10 +12,11 @@ app.get('/api/health', (req, res) => {
   res.json({
     status: 'OK',
     port: PORT,
-    db_url: !!process.env.DATABASE_URL,
-    jwt: !!process.env.JWT_SECRET,
-    node_env: process.env.NODE_ENV,
-    timestamp: new Date().toISOString()
+    DATABASE_URL: (process.env.DATABASE_URL || 'NOT_SET').substring(0, 25),
+    PG_URL:       (process.env.PG_URL       || 'NOT_SET').substring(0, 25),
+    JWT_SECRET:   (process.env.JWT_SECRET   || 'NOT_SET').substring(0, 10),
+    NODE_ENV:      process.env.NODE_ENV,
+    timestamp:     new Date().toISOString()
   });
 });
 
@@ -26,4 +27,6 @@ app.get('*', (req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ Server running on port ${PORT}`);
   console.log(`DATABASE_URL: ${process.env.DATABASE_URL ? 'SET' : 'NOT SET'}`);
-}); 
+  console.log(`PG_URL: ${process.env.PG_URL ? 'SET' : 'NOT SET'}`);
+  console.log(`JWT_SECRET: ${process.env.JWT_SECRET ? 'SET' : 'NOT SET'}`);
+});
