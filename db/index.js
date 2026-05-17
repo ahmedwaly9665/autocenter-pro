@@ -2,21 +2,21 @@ const { Pool } = require('pg');
 const fs = require('fs');
 const path = require('path');
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production'
-    ? { rejectUnauthorized: false }
-    : false,
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-});
+console.log('DATABASE_URL:', process.env.DATABASE_URL ? 'موجود ✅' : 'غير موجود ❌');
 
-pool.on('error', (err) => {
-  console.error('Database pool error:', err);
-});
+const pool = new Pool(
+  process.env.DATABASE_URL
+    ? {
+        connectionString: process.env.DATABASE_URL,
+        ssl: { rejectUnauthorized: false }
+      }
+    : {
+        host: 'localhost',
+        port: 5432,
+        database: 'autocenter'
+      }
+);
 
-// تهيئة قاعدة البيانات
 async function initDB() {
   const client = await pool.connect();
   try {
@@ -26,9 +26,9 @@ async function initDB() {
     console.log('✅ تم تهيئة قاعدة البيانات بنجاح');
   } catch (err) {
     if (err.message.includes('already exists')) {
-      console.log('ℹ️  قاعدة البيانات موجودة مسبقاً، تم التخطي');
+      console.log('ℹ️  قاعدة البيانات موجودة مسبقاً');
     } else {
-      console.error('❌ خطأ في تهيئة قاعدة البيانات:', err.message);
+      console.error('❌ خطأ في قاعدة البيانات:', err.message);
       throw err;
     }
   } finally {
