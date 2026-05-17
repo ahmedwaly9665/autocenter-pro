@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoCenter Pro</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f0f4f8;display:flex;align-items:center;justify-content:center;min-height:100vh;direction:rtl}
+.login-card{background:#fff;border-radius:16px;padding:40px;width:100%;max-width:380px;box-shadow:0 10px 40px rgba(0,0,0,.1)}
+.logo{width:56px;height:56px;background:#185FA5;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px}
+h1{text-align:center;font-size:22px;font-weight:700;color:#111;margin-bottom:6px}
+.sub{text-align:center;font-size:13px;color:#6b7280;margin-bottom:28px}
+.fl{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.fl label{font-size:12px;font-weight:600;color:#374151}
+.fl input{padding:10px 14px;border-radius:8px;border:1.5px solid #e5e7eb;font-size:14px;transition:border-color .15s}
+.fl input:focus{outline:none;border-color:#185FA5}
+.btn-login{width:100%;padding:12px;background:#185FA5;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;transition:background .15s}
+.btn-login:hover{background:#1350a0}
+.error{background:#fee2e2;color:#991b1b;border-radius:8px;padding:10px 14px;font-size:12px;margin-bottom:12px;display:none}
+.hint{text-align:center;font-size:11px;color:#9ca3af;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="login-card">
+  <div class="logo">🚗</div>
+  <h1>AutoCenter Pro</h1>
+  <div class="sub">نظام إدارة مراكز الصيانة</div>
+  <div class="error" id="err">اسم المستخدم أو كلمة المرور غير صحيحة</div>
+  <div class="fl">
+    <label>اسم المستخدم</label>
+    <input type="text" id="username" placeholder="admin" autocomplete="username">
+  </div>
+  <div class="fl">
+    <label>كلمة المرور</label>
+    <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
+  </div>
+  <button class="btn-login" onclick="login()" id="loginBtn">تسجيل الدخول</button>
+  <div class="hint">للتجربة: admin / admin1234</div>
+</div>
+<script>
+async function login(){
+  const username=document.getElementById('username').value.trim();
+  const password=document.getElementById('password').value;
+  const btn=document.getElementById('loginBtn');
+  const err=document.getElementById('err');
+  if(!username||!password){err.textContent='يرجى إدخال اسم المستخدم وكلمة المرور';err.style.display='block';return;}
+  btn.textContent='جارٍ الدخول...';btn.disabled=true;err.style.display='none';
+  try{
+    const res=await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password})});
+    const data=await res.json();
+    if(!res.ok){err.textContent=data.error||'خطأ في تسجيل الدخول';err.style.display='block';}
+    else{localStorage.setItem('ac_token',data.token);localStorage.setItem('ac_user',JSON.stringify(data.user));window.location.href='/dashboard';}
+  }catch(e){err.textContent='تعذر الاتصال بالخادم';err.style.display='block';}
+  btn.textContent='تسجيل الدخول';btn.disabled=false;
+}
+// Redirect if already logged in
+if(localStorage.getItem('ac_token'))window.location.href='/dashboard';
+</script>
+</body>
+</html>
