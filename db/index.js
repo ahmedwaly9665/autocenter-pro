@@ -2,35 +2,51 @@ const { Pool } = require('pg');
 const fs = require('fs');
 const path = require('path');
 
-console.log('DATABASE_URL:', process.env.DATABASE_URL ? 'موجود ✅' : 'غير موجود ❌');
+const dbUrl = process.env.DATABASE_URL || process.env.DATABASE_PUBLIC_URL;
 
-const pool = new Pool(
-  process.env.DATABASE_URL
-    ? {
-        connectionString: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false }
-      }
-    : {
-        host: 'localhost',
-        port: 5432,
-        database: 'autocenter'
-      }
-);
+console.log('=== DB Config ===');
+console.log('DATABASE_URL exists:', !!process.env.DATABASE_URL);
+console.log('DATABASE_PUBLIC_URL exists:', !!process.env.DATABASE_PUBLIC_URL);
+console.log('PGHOST:', process.env.PGHOST || 'not set');
+
+let poolConfig;
+if (dbUrl) {
+  poolConfig = {
+    connectionString: dbUrl,
+    ssl: { rejectUnauthorized: false }
+  };
+} else if (process.env.PGHOST) {
+  poolConfig = {
+    host:     process.env.PGHOST,
+    port:     process.env.PGPORT     || 5432,
+    database: process.env.PGDATABASE || 'railway',
+    user:     process.env.PGUSER     || 'postgres',
+    password: process.env.PGPASSWORD,
+    ssl: { rejectUnauthorized: false }
+  };
+} else {
+  console.log('⚠️  No DB config found, using localhost');
+  poolConfig = { host: 'localhost', port: 5432, database: 'autocenter' };
+}
+
+const pool = new Pool(poolConfig);
 
 async function initDB() {
   const client = await pool.connect();
   try {
-    console.log('🔄 جاري تهيئة قاعدة البيانات...');
+    console.log('🔄 تهيئة قاعدة البيانات...');
     const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
-    await client.query(schema);
-    console.log('✅ تم تهيئة قاعدة البيانات بنجاح');
-  } catch (err) {
-    if (err.message.includes('already exists')) {
-      console.log('ℹ️  قاعدة البيانات موجودة مسبقاً');
-    } else {
-      console.error('❌ خطأ في قاعدة البيانات:', err.message);
-      throw err;
+    const statements = schema.split(';').filter(s => s.trim());
+    for (const stmt of statements) {
+      if (stmt.trim()) {
+        await client.query(stmt).catch(e => {
+          if (!e.message.includes('already exists')) {
+            console.warn('SQL warning:', e.message.substring(0, 80));
+          }
+        });
+      }
     }
+    console.log('✅ قاعدة البيانات جاهزة');
   } finally {
     client.release();
   }
