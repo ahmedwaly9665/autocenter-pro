@@ -6,56 +6,390 @@
 <title>AutoCenter Pro</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,sans-serif;background:#f0f4f8;display:flex;align-items:center;justify-content:center;min-height:100vh;direction:rtl}
+body{font-family:system-ui,sans-serif;background:#f0f4f8;direction:rtl}
+/* LOGIN */
+.login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh}
 .login-card{background:#fff;border-radius:16px;padding:40px;width:100%;max-width:380px;box-shadow:0 10px 40px rgba(0,0,0,.1)}
 .logo{width:56px;height:56px;background:#185FA5;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px}
 h1{text-align:center;font-size:22px;font-weight:700;color:#111;margin-bottom:6px}
 .sub{text-align:center;font-size:13px;color:#6b7280;margin-bottom:28px}
 .fl{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
 .fl label{font-size:12px;font-weight:600;color:#374151}
-.fl input{padding:10px 14px;border-radius:8px;border:1.5px solid #e5e7eb;font-size:14px;transition:border-color .15s}
+.fl input{padding:10px 14px;border-radius:8px;border:1.5px solid #e5e7eb;font-size:14px}
 .fl input:focus{outline:none;border-color:#185FA5}
-.btn-login{width:100%;padding:12px;background:#185FA5;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;transition:background .15s}
+.btn-login{width:100%;padding:12px;background:#185FA5;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px}
 .btn-login:hover{background:#1350a0}
-.error{background:#fee2e2;color:#991b1b;border-radius:8px;padding:10px 14px;font-size:12px;margin-bottom:12px;display:none}
+.btn-login:disabled{opacity:.6;cursor:not-allowed}
+.error-box{background:#fee2e2;color:#991b1b;border-radius:8px;padding:10px 14px;font-size:12px;margin-bottom:12px;display:none}
 .hint{text-align:center;font-size:11px;color:#9ca3af;margin-top:16px}
+
+/* MAIN APP */
+.app{display:none;height:100vh;background:#f0f4f8}
+.app.show{display:flex}
+.sidebar{width:210px;background:#fff;border-left:1px solid #e5e7eb;display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.brand{padding:12px 14px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:9px}
+.bicon{width:30px;height:30px;background:#185FA5;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px}
+.bname{font-size:12px;font-weight:700;color:#111}
+.bsub{font-size:10px;color:#6b7280}
+.user-bar{margin:8px 10px;background:#f3f4f6;border-radius:8px;padding:8px 10px;font-size:11px}
+.user-name{font-weight:600;color:#111}
+.user-role{color:#6b7280;font-size:10px}
+.logout-btn{margin-top:6px;padding:4px 10px;border-radius:6px;border:1px solid #e5e7eb;background:transparent;font-size:10px;cursor:pointer;color:#6b7280;width:100%}
+.logout-btn:hover{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
+nav{flex:1;padding:8px 0}
+.nlbl{font-size:9px;color:#9ca3af;padding:5px 12px 2px;letter-spacing:.4px;text-transform:uppercase}
+.ni{display:flex;align-items:center;gap:7px;padding:7px 12px;font-size:11px;color:#6b7280;cursor:pointer;transition:background .1s}
+.ni:hover{background:#f3f4f6;color:#111}
+.ni.on{background:#eff6ff;color:#185FA5;font-weight:600}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{height:50px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 16px;gap:8px}
+.ptitle{font-size:13px;font-weight:700;color:#111;flex:1}
+.cnt{flex:1;overflow-y:auto;padding:16px}
+.page{display:none}.page.on{display:block}
+.kg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.kc{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.kl{font-size:10px;color:#6b7280;margin-bottom:5px}
+.kv{font-size:20px;font-weight:700;color:#111}
+.ks{font-size:10px;color:#3B6D11;margin-top:3px}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.ct{font-size:13px;font-weight:600;color:#111}
+table.t{width:100%;border-collapse:collapse;font-size:12px}
+table.t th{background:#f9fafb;padding:8px 12px;text-align:right;font-weight:500;color:#6b7280;border-bottom:1px solid #e5e7eb}
+table.t td{padding:8px 12px;border-bottom:1px solid #e5e7eb;color:#111}
+table.t tr:last-child td{border:none}
+table.t tr:hover td{background:#f9fafb}
+.st{display:inline-flex;padding:2px 8px;border-radius:8px;font-size:10px}
+.so{background:#fef3c7;color:#92400e}
+.sd2{background:#d1fae5;color:#065f46}
+.sw{background:#dbeafe;color:#1e40af}
+.sr{background:#fee2e2;color:#991b1b}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.bl{width:55px;font-size:10px;color:#6b7280;text-align:right;flex-shrink:0}
+.bt{flex:1;height:7px;background:#f3f4f6;border-radius:4px;overflow:hidden}
+.bf{height:100%;background:#185FA5;border-radius:4px}
+.bv{width:55px;font-size:10px;text-align:left;flex-shrink:0}
+.loading{text-align:center;padding:40px;color:#6b7280;font-size:14px}
+.api-error{background:#fee2e2;color:#991b1b;border-radius:8px;padding:12px;margin-bottom:12px;font-size:12px}
 </style>
 </head>
 <body>
-<div class="login-card">
-  <div class="logo">🚗</div>
-  <h1>AutoCenter Pro</h1>
-  <div class="sub">نظام إدارة مراكز الصيانة</div>
-  <div class="error" id="err">اسم المستخدم أو كلمة المرور غير صحيحة</div>
-  <div class="fl">
-    <label>اسم المستخدم</label>
-    <input type="text" id="username" placeholder="admin" autocomplete="username">
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div class="logo">🚗</div>
+    <h1>AutoCenter Pro</h1>
+    <div class="sub">نظام إدارة مراكز الصيانة</div>
+    <div class="error-box" id="loginErr"></div>
+    <div class="fl"><label>اسم المستخدم</label><input type="text" id="username" placeholder="admin" autocomplete="username"></div>
+    <div class="fl"><label>كلمة المرور</label><input type="password" id="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="btn-login" id="loginBtn" onclick="doLogin()">تسجيل الدخول</button>
+    <div class="hint">للتجربة: admin / password</div>
   </div>
-  <div class="fl">
-    <label>كلمة المرور</label>
-    <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
-  </div>
-  <button class="btn-login" onclick="login()" id="loginBtn">تسجيل الدخول</button>
-  <div class="hint">للتجربة: admin / admin1234</div>
 </div>
+
+<!-- MAIN APP -->
+<div class="app" id="mainApp">
+  <div class="sidebar">
+    <div class="brand">
+      <div class="bicon">🚗</div>
+      <div><div class="bname" id="appName">AutoCenter Pro</div><div class="bsub">إدارة 16 فرع</div></div>
+    </div>
+    <div class="user-bar">
+      <div class="user-name" id="userName">مدير الفروع</div>
+      <div class="user-role" id="userRole">مدير الفروع الكامل</div>
+      <button class="logout-btn" onclick="doLogout()">تسجيل الخروج</button>
+    </div>
+    <nav>
+      <div class="nlbl">رئيسي</div>
+      <div class="ni on" onclick="go('dashboard',this)">📊 لوحة التحكم</div>
+      <div class="nlbl">العمليات</div>
+      <div class="ni" onclick="go('orders',this)">🚗 السيارات والطلبات</div>
+      <div class="ni" onclick="go('parts',this)">🔧 قطع الغيار</div>
+      <div class="ni" onclick="go('suppliers',this)">🚛 الموردون</div>
+      <div class="nlbl">الموارد البشرية</div>
+      <div class="ni" onclick="go('employees',this)">👥 الموظفون</div>
+      <div class="ni" onclick="go('payroll',this)">💰 المرتبات</div>
+      <div class="nlbl">المالية</div>
+      <div class="ni" onclick="go('accounting',this)">📈 الحسابات</div>
+      <div class="nlbl">الإدارة</div>
+      <div class="ni" onclick="go('branches',this)">🏢 الفروع</div>
+      <div class="ni" onclick="go('users',this)">👤 المستخدمون</div>
+    </nav>
+  </div>
+  <div class="main">
+    <div class="topbar">
+      <span class="ptitle" id="ptitle">لوحة التحكم</span>
+    </div>
+    <div class="cnt">
+
+      <!-- DASHBOARD -->
+      <div class="page on" id="pg-dashboard">
+        <div class="kg" id="kpi-grid">
+          <div class="kc"><div class="kl">سيارات اليوم</div><div class="kv" id="k-orders">-</div><div class="ks">جميع الفروع</div></div>
+          <div class="kc"><div class="kl">إيراد الشهر</div><div class="kv" id="k-rev">-</div><div class="ks">شامل الضريبة</div></div>
+          <div class="kc"><div class="kl">صافي الربح</div><div class="kv" id="k-profit">-</div><div class="ks">هذا الشهر</div></div>
+          <div class="kc"><div class="kl">الفروع النشطة</div><div class="kv" id="k-branches">-</div><div class="ks">من أصل 16</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:12px">
+          <div class="card"><div class="ch"><span class="ct">آخر الطلبات</span></div>
+            <div id="orders-table"><div class="loading">جاري التحميل...</div></div>
+          </div>
+          <div class="card"><div class="ch"><span class="ct">إيرادات الفروع</span></div>
+            <div id="branch-bars"><div class="loading">جاري التحميل...</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDERS -->
+      <div class="page" id="pg-orders">
+        <div class="card"><div class="ch"><span class="ct">السيارات والطلبات</span></div>
+          <div id="orders-list"><div class="loading">جاري التحميل...</div></div>
+        </div>
+      </div>
+
+      <!-- BRANCHES -->
+      <div class="page" id="pg-branches">
+        <div class="card"><div class="ch"><span class="ct">الفروع</span></div>
+          <div id="branches-list"><div class="loading">جاري التحميل...</div></div>
+        </div>
+      </div>
+
+      <!-- EMPLOYEES -->
+      <div class="page" id="pg-employees">
+        <div class="card"><div class="ch"><span class="ct">الموظفون</span></div>
+          <div id="employees-list"><div class="loading">جاري التحميل...</div></div>
+        </div>
+      </div>
+
+      <!-- ACCOUNTING -->
+      <div class="page" id="pg-accounting">
+        <div id="accounting-data"><div class="loading">جاري التحميل...</div></div>
+      </div>
+
+      <!-- OTHER PAGES -->
+      <div class="page" id="pg-parts"><div class="card"><div class="ch"><span class="ct">قطع الغيار</span></div><div class="loading">جاري التحميل...</div></div></div>
+      <div class="page" id="pg-suppliers"><div class="card"><div class="ch"><span class="ct">الموردون</span></div><div class="loading">جاري التحميل...</div></div></div>
+      <div class="page" id="pg-payroll"><div class="card"><div class="ch"><span class="ct">المرتبات</span></div><div class="loading">جاري التحميل...</div></div></div>
+      <div class="page" id="pg-users"><div class="card"><div class="ch"><span class="ct">المستخدمون</span></div><div class="loading">جاري التحميل...</div></div></div>
+
+    </div>
+  </div>
+</div>
+
 <script>
-async function login(){
-  const username=document.getElementById('username').value.trim();
-  const password=document.getElementById('password').value;
-  const btn=document.getElementById('loginBtn');
-  const err=document.getElementById('err');
-  if(!username||!password){err.textContent='يرجى إدخال اسم المستخدم وكلمة المرور';err.style.display='block';return;}
-  btn.textContent='جارٍ الدخول...';btn.disabled=true;err.style.display='none';
-  try{
-    const res=await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password})});
-    const data=await res.json();
-    if(!res.ok){err.textContent=data.error||'خطأ في تسجيل الدخول';err.style.display='block';}
-    else{localStorage.setItem('ac_token',data.token);localStorage.setItem('ac_user',JSON.stringify(data.user));window.location.href='/dashboard';}
-  }catch(e){err.textContent='تعذر الاتصال بالخادم';err.style.display='block';}
-  btn.textContent='تسجيل الدخول';btn.disabled=false;
+const API = '';
+let TOKEN = localStorage.getItem('ac_token');
+let USER  = JSON.parse(localStorage.getItem('ac_user') || 'null');
+
+// ── Auth ──
+async function doLogin() {
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('loginErr');
+  if (!username || !password) { showErr('أدخل اسم المستخدم وكلمة المرور'); return; }
+  btn.disabled = true; btn.textContent = 'جارٍ الدخول...'; err.style.display = 'none';
+  try {
+    const res = await fetch(API + '/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    const data = await res.json();
+    if (!res.ok) { showErr(data.error || 'خطأ في تسجيل الدخول'); }
+    else {
+      TOKEN = data.token;
+      USER  = data.user;
+      localStorage.setItem('ac_token', TOKEN);
+      localStorage.setItem('ac_user', JSON.stringify(USER));
+      showApp();
+    }
+  } catch(e) { showErr('تعذر الاتصال بالخادم'); }
+  btn.disabled = false; btn.textContent = 'تسجيل الدخول';
 }
-// Redirect if already logged in
-if(localStorage.getItem('ac_token'))window.location.href='/dashboard';
+
+function showErr(msg) {
+  const e = document.getElementById('loginErr');
+  e.textContent = msg; e.style.display = 'block';
+}
+
+function doLogout() {
+  localStorage.removeItem('ac_token');
+  localStorage.removeItem('ac_user');
+  TOKEN = null; USER = null;
+  document.getElementById('mainApp').classList.remove('show');
+  document.getElementById('loginWrap').style.display = 'flex';
+}
+
+function showApp() {
+  document.getElementById('loginWrap').style.display = 'none';
+  document.getElementById('mainApp').classList.add('show');
+  document.getElementById('userName').textContent = USER?.full_name || 'مدير';
+  document.getElementById('userRole').textContent = USER?.branch_name || 'جميع الفروع';
+  loadDashboard();
+}
+
+// ── Navigation ──
+const titles = { dashboard:'لوحة التحكم', orders:'السيارات والطلبات', parts:'قطع الغيار', suppliers:'الموردون', employees:'الموظفون', payroll:'المرتبات', accounting:'الحسابات', branches:'الفروع', users:'المستخدمون' };
+function go(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
+  document.getElementById('pg-' + id).classList.add('on');
+  if (el) el.classList.add('on');
+  document.getElementById('ptitle').textContent = titles[id] || id;
+  if (id === 'orders')     loadOrders();
+  if (id === 'branches')   loadBranches();
+  if (id === 'employees')  loadEmployees();
+  if (id === 'accounting') loadAccounting();
+}
+
+// ── API Helper ──
+async function api(path) {
+  const res = await fetch(API + path, { headers: { Authorization: 'Bearer ' + TOKEN } });
+  if (res.status === 401) { doLogout(); throw new Error('Unauthorized'); }
+  return res.json();
+}
+
+// ── Dashboard ──
+async function loadDashboard() {
+  try {
+    const [branches, summary] = await Promise.all([
+      api('/api/branches'),
+      api('/api/accounting/summary')
+    ]);
+    document.getElementById('k-orders').textContent = summary.orders_count || 0;
+    document.getElementById('k-rev').textContent    = Number(summary.revenue || 0).toLocaleString() + ' ر';
+    document.getElementById('k-profit').textContent = Number(summary.net_profit || 0).toLocaleString() + ' ر';
+    document.getElementById('k-branches').textContent = branches.filter(b => b.status === 'active').length;
+
+    // Branch bars
+    const maxRev = Math.max(...branches.map(b => parseFloat(b.revenue_this_month || 0)), 1);
+    document.getElementById('branch-bars').innerHTML = branches.slice(0,6).map(b => {
+      const rev = parseFloat(b.revenue_this_month || 0);
+      const pct = Math.round(rev / maxRev * 100);
+      return `<div class="bar-row"><span class="bl">${b.name.replace('فرع ','')}</span><div class="bt"><div class="bf" style="width:${pct}%"></div></div><span class="bv">${Math.round(rev/1000)}k ر</span></div>`;
+    }).join('');
+
+    // Latest orders
+    const orders = await api('/api/orders?limit=5');
+    if (orders.data?.length) {
+      document.getElementById('orders-table').innerHTML = `<table class="t">
+        <thead><tr><th>رقم الطلب</th><th>المالك</th><th>السيارة</th><th>الفرع</th><th>الإجمالي</th><th>الحالة</th></tr></thead>
+        <tbody>${orders.data.map(o => `<tr>
+          <td>${o.order_ref}</td>
+          <td>${o.owner_name}</td>
+          <td>${o.car_type || '-'}</td>
+          <td>${o.branch_name}</td>
+          <td>${Number(o.grand_total).toLocaleString()} ر</td>
+          <td><span class="st ${o.status==='completed'?'sd2':o.status==='open'?'so':'sw'}">${o.status==='completed'?'مكتملة':o.status==='open'?'جارية':'انتظار'}</span></td>
+        </tr>`).join('')}</tbody>
+      </table>`;
+    } else {
+      document.getElementById('orders-table').innerHTML = '<div style="text-align:center;padding:20px;color:#6b7280;font-size:12px">لا توجد طلبات بعد</div>';
+    }
+  } catch(e) {
+    console.error('Dashboard error:', e);
+  }
+}
+
+// ── Orders ──
+async function loadOrders() {
+  try {
+    const data = await api('/api/orders?limit=50');
+    if (!data.data?.length) { document.getElementById('orders-list').innerHTML = '<div style="text-align:center;padding:20px;color:#6b7280">لا توجد طلبات</div>'; return; }
+    document.getElementById('orders-list').innerHTML = `<table class="t">
+      <thead><tr><th>رقم الطلب</th><th>اللوحة</th><th>المالك</th><th>السيارة</th><th>الفرع</th><th>الفني</th><th>الإجمالي</th><th>الربح</th><th>الحالة</th></tr></thead>
+      <tbody>${data.data.map(o => `<tr>
+        <td>${o.order_ref}</td>
+        <td>${o.plate_number}</td>
+        <td>${o.owner_name}</td>
+        <td>${o.car_type || '-'}</td>
+        <td>${o.branch_name}</td>
+        <td>${o.technician_name || '-'}</td>
+        <td>${Number(o.grand_total).toLocaleString()} ر</td>
+        <td style="color:#065f46">+${(Number(o.total_sell)-Number(o.total_buy)).toLocaleString()} ر</td>
+        <td><span class="st ${o.status==='completed'?'sd2':o.status==='open'?'so':'sw'}">${o.status==='completed'?'مكتملة':o.status==='open'?'جارية':'انتظار'}</span></td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  } catch(e) { document.getElementById('orders-list').innerHTML = '<div class="api-error">خطأ في جلب الطلبات</div>'; }
+}
+
+// ── Branches ──
+async function loadBranches() {
+  try {
+    const data = await api('/api/branches');
+    document.getElementById('branches-list').innerHTML = `<table class="t">
+      <thead><tr><th>الفرع</th><th>المدينة</th><th>المدير</th><th>عدد الموظفين</th><th>إجمالي الطلبات</th><th>إيراد الشهر</th><th>الحالة</th></tr></thead>
+      <tbody>${data.map(b => `<tr>
+        <td><b>${b.name}</b></td>
+        <td>${b.city || '-'}</td>
+        <td>${b.manager_name || '-'}</td>
+        <td>${b.staff_count || 0}</td>
+        <td>${b.total_orders || 0}</td>
+        <td>${Number(b.revenue_this_month || 0).toLocaleString()} ر</td>
+        <td><span class="st ${b.status==='active'?'sd2':'sr'}">${b.status==='active'?'نشط':'غير نشط'}</span></td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  } catch(e) { document.getElementById('branches-list').innerHTML = '<div class="api-error">خطأ في جلب الفروع</div>'; }
+}
+
+// ── Employees ──
+async function loadEmployees() {
+  try {
+    const data = await api('/api/employees');
+    document.getElementById('employees-list').innerHTML = `<table class="t">
+      <thead><tr><th>الموظف</th><th>الوظيفة</th><th>الفرع</th><th>رقم الهوية</th><th>الراتب الأساسي</th><th>الطلبات</th><th>الحالة</th></tr></thead>
+      <tbody>${data.map(e => `<tr>
+        <td><b>${e.name}</b></td>
+        <td>${e.job_title || '-'}</td>
+        <td>${e.branch_name || '-'}</td>
+        <td>${e.national_id || '-'}</td>
+        <td>${Number(e.base_salary).toLocaleString()} ر</td>
+        <td>${e.total_orders || 0}</td>
+        <td><span class="st ${e.status==='active'?'sd2':e.status==='leave'?'so':'sr'}">${e.status==='active'?'نشط':e.status==='leave'?'إجازة':'غير نشط'}</span></td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  } catch(e) { document.getElementById('employees-list').innerHTML = '<div class="api-error">خطأ في جلب الموظفين</div>'; }
+}
+
+// ── Accounting ──
+async function loadAccounting() {
+  try {
+    const data = await api('/api/accounting/summary');
+    document.getElementById('accounting-data').innerHTML = `
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px">
+        <div class="kc"><div class="kl">إجمالي الإيرادات</div><div class="kv" style="color:#065f46">${Number(data.revenue||0).toLocaleString()} ر</div></div>
+        <div class="kc"><div class="kl">إجمالي المصاريف</div><div class="kv" style="color:#991b1b">${Number(data.total_expenses||0).toLocaleString()} ر</div></div>
+        <div class="kc"><div class="kl">صافي الربح</div><div class="kv">${Number(data.net_profit||0).toLocaleString()} ر<div style="font-size:11px;color:#6b7280">${data.profit_margin}%</div></div></div>
+      </div>
+      <div class="card">
+        <div class="ch"><span class="ct">تقرير ضريبة القيمة المضافة - ZATCA</span></div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+          <div style="background:#f0f4f8;border-radius:8px;padding:12px;text-align:center">
+            <div style="font-size:12px;color:#6b7280">وعاء الضريبة</div>
+            <div style="font-size:18px;font-weight:700">${Number(data.revenue_before_vat||0).toLocaleString()} ر</div>
+          </div>
+          <div style="background:#fef3c7;border-radius:8px;padding:12px;text-align:center">
+            <div style="font-size:12px;color:#92400e">ضريبة القيمة المضافة (15%)</div>
+            <div style="font-size:18px;font-weight:700;color:#92400e">${Number(data.vat_amount||0).toLocaleString()} ر</div>
+          </div>
+          <div style="background:#d1fae5;border-radius:8px;padding:12px;text-align:center">
+            <div style="font-size:12px;color:#065f46">الإجمالي شامل الضريبة</div>
+            <div style="font-size:18px;font-weight:700;color:#065f46">${Number(data.revenue||0).toLocaleString()} ر</div>
+          </div>
+        </div>
+      </div>`;
+  } catch(e) { document.getElementById('accounting-data').innerHTML = '<div class="api-error">خطأ في جلب الحسابات</div>'; }
+}
+
+// ── Init ──
+if (TOKEN) {
+  showApp();
+} else {
+  document.getElementById('loginWrap').style.display = 'flex';
+}
 </script>
 </body>
 </html>
